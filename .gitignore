@@ -3,3 +3,6 @@
 .settings
 .project
 gradle/
+gradlew
+gradlew.bat
+build.gradle
