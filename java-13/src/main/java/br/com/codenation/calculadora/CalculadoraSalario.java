@@ -4,18 +4,60 @@ package br.com.codenation.calculadora;
 public class CalculadoraSalario {
 
 	public long calcularSalarioLiquido(double salarioBase) {
-		//Use o Math.round apenas no final do método para arredondar o valor final.
-		//Documentação do método: https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#round-double-
-		return Math.round(0.0);
+
+		double minimumWage = 1039;
+
+		if(salarioBase < minimumWage) {
+			return Math.round(0.0);
+		}
+
+		return  Math.round(calcularIRRF(salarioBase));
 	}
-	
-	
-	//Exemplo de método que pode ser criado para separar melhor as responsábilidades de seu algorítmo
+
 	private double calcularInss(double salarioBase) {
-		return 0.0;
+
+		double discountPercentage = discountBySalaryRangeForINSS(salarioBase);
+
+		double amountToBeDiscounted = discountPercentage * salarioBase;
+
+		double salaryAfterDiscount = salarioBase - amountToBeDiscounted;
+
+		return salaryAfterDiscount;
+
+	}
+
+	private double calcularIRRF(double salarioBase) {
+
+		double salaryAfterINSSDiscount = calcularInss(salarioBase);
+
+		double discountPercentage = discountBySalaryRangeForIRRF(salaryAfterINSSDiscount);
+
+		double amountToBeDiscounted = salaryAfterINSSDiscount - (discountPercentage * salaryAfterINSSDiscount);
+
+		return amountToBeDiscounted;
+	}
+
+	private double discountBySalaryRangeForINSS(double grossSalary) {
+
+		if(grossSalary <= 1500) {
+			return 8.0 / 100.0;
+		} else if (grossSalary > 1500 && grossSalary <= 4000) {
+			return 9.0 / 100.0;
+		} else {
+			return 11.0 / 100.0;
+		}
+
+	}
+
+	private double discountBySalaryRangeForIRRF(double referenceValue) {
+
+		if(referenceValue < 3000) {
+			return 0.0;
+		} else if( referenceValue > 3000 && referenceValue <= 6000) {
+			return 7.50 / 100.0;
+		} else {
+			return 15.0 / 100.0;
+		}
 	}
 
 }
-/*Dúvidas ou Problemas?
-Manda e-mail para o meajuda@codenation.dev que iremos te ajudar! 
-*/
